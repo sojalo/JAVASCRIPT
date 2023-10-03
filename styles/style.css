@@ -1,7 +1,10 @@
 html {
   font-size: 16px;
   box-sizing: border-box;
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  /* font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; */
+  font-family: 'Bai Jamjuree', sans-serif;
+  color: #212121;
+  background-color: #F5F2ED;;
 }
 
 * {
@@ -10,19 +13,78 @@ html {
   box-sizing: inherit;
 }
 
-.business-table {
+/* .business-table {
   box-sizing: content-box;
-}
+} */
 
 body {
-  min-width: 1024px;
+  min-width: 540px;
+  margin: 18px;
 }
 
 .skills-table, .business-table {
-  margin: 0 20px;
+  width: 100%;
 }
 
 /******************************** Main area ************************************************/
 .main-container {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.inventory-container {
+  min-width: 540px;
+}
+
+.clicking-area-container {
+  text-align: center;
+}
+
+.upgrade-stats-cell {
+  width: 64px;
+}
+
+.upgrade-icon-cell {
+  width: 110px;
+  padding: 5px;
+}
+
+.skill-image {
+  width: 100px;
+  border-radius: 5%;
+}
+
+@media screen and (max-width: 1400px) {
+  .main-container {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+    "gold gold"
+    "perclick persec";
+  }
+
+  .inventory-container.per-click {
+    grid-area: perclick;
+  }
+  
+  .inventory-container.per-sec {
+    grid-area: persec;
+  }
+  
+  .clicking-area-container {
+    grid-area: gold;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .main-container {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+    "gold"
+    "perclick"
+    "persec";
+  }
+}
+
+@media screen and (max-width: 576px) {
+  
 }
