@@ -16,7 +16,15 @@ function getTemplate(){
 
 let clickingAreaNode = document.querySelector(".js-clicking-area-container");
 clickingAreaNode.innerHTML = getTemplate();
+/********************************************************************************************/ 
+/* PRE: 0 <= Price <= 999999*/
+function formatPrice(price) {
+  if(price < 1000) return price;
+  let kValue = price / 1000;
+  return `${kValue}K`;
+}
 
+/********************************************************************************************/ 
 let skillList = [
   {
     skillName: 'Bitcoin kutatás',
@@ -28,34 +36,34 @@ let skillList = [
   },
   {
     skillName: 'Bróker képzés',
-    bitcoinPerIncrement: 1,
+    bitcoinPerIncrement: 10,
     description: 'Bányászok betanítását készpénzre válthatjuk.',
     amount: 0,
-    price: 10,
+    price: 200,
     link: "./assets/broker_kepzes.png",
   },
   {
     skillName: 'Manager képzés',
-    bitcoinPerIncrement: 1,
+    bitcoinPerIncrement: 25,
     description: 'Minél jobban kitanuljuk a managerek képzésének tudományát, annál több managert tudunk értékesíteni bitcoinért cserébe.',
     amount: 0,
-    price: 10,
+    price: 750,
     link: "./assets/manager_kepzes.png",
   },
   {
     skillName: 'Kereskedelem',
-    bitcoinPerIncrement: 1,
+    bitcoinPerIncrement: 100,
     description: 'BitCoinok értékesítésével profitot termelhetünk.',
     amount: 0,
-    price: 10,
+    price: 4000,
     link: "./assets/kereskedelem.png",
   },
   {
     skillName: 'Tőzsde',
-    bitcoinPerIncrement: 1,
+    bitcoinPerIncrement: 300,
     description: 'A bányászat hatását tovább erősíti és magasabb kereskedelmi tevékenységet is végezhetünk.',
     amount: 0,
-    price: 10,
+    price: 15000,
     link: "./assets/tozsde.png",
   },
 ];
@@ -69,7 +77,7 @@ function getSkill({skillName, bitcoinPerIncrement, description, amount, price, l
       </td>
       <td class="upgrade-stats-cell">
         <p>db: ${amount}</p>
-        <p>ár: ${price}</p>
+        <p>ár: ${formatPrice(price)}</p>
       </td>
       <td class="upgrade-icon-cell">
         <img class="skill-image" src="${link}" alt="${skillName}">
@@ -78,12 +86,26 @@ function getSkill({skillName, bitcoinPerIncrement, description, amount, price, l
   `;
 }
 
-let skillTemplate = getSkill(skillList[0]);
-// for(let elem in skillList){
-//   getSkill(skillList[elem]);
+// 1. megoldás
+// let rows = [];
+// for(let skill of skillList){
+//   rows.push(getSkill(skill));
 // }
-document.querySelector(".js-skills-tbody").innerHTML = skillTemplate;
+// document.querySelector(".js-skills-tbody").innerHTML = rows.join("");
+  
+// 2. megoldás
+// let skillHtml ="";
+// for(let skill of skillList){
+//   skillHtml += getSkill(skill);
+// }
+// document.querySelector(".js-skills-tbody").innerHTML = skillHtml;
 
+// 3. megoldás Map
+document.querySelector(".js-skills-tbody").innerHTML =
+  skillList
+  .map(getSkill)
+  .join("");
+/********************************************************************************************/ 
 let employeeList = [
   {
     employeeName: 'BitCoin kutató',
@@ -95,34 +117,34 @@ let employeeList = [
   },
   {
     employeeName: 'Bróker képző',
-    bitcoinPerSecIncrement: 1,
+    bitcoinPerSecIncrement: 5,
     description: 'Szerződéses munkatársként bányászokat tanít.',
     amount: 0,
-    price: 100,
+    price: 1000,
     link: "./assets/broker_kepzo.png",
   },
   {
     employeeName: 'Manager képző',
-    bitcoinPerSecIncrement: 1,
+    bitcoinPerSecIncrement: 10,
     description: 'Managereket képez ki és értékesít a piacon.',
     amount: 0,
-    price: 100,
+    price: 3000,
     link: "./assets/manager_kepzo.png",
   },
   {
     employeeName: 'Kereskedő',
-    bitcoinPerSecIncrement: 1,
+    bitcoinPerSecIncrement: 25,
     description: 'Blokkláncokat készít és értékesít.',
     amount: 0,
-    price: 100,
+    price: 10000,
     link: "./assets/kereskedo.png",
   },
   {
     employeeName: 'Befektető Warren Buffett',
-    bitcoinPerSecIncrement: 1,
+    bitcoinPerSecIncrement: 100,
     description: 'Kezeli és fialtatja a vagyonodat.',
     amount: 0,
-    price: 100,
+    price: 50000,
     link: "./assets/befekteto.png",
   },
 ];
@@ -135,7 +157,7 @@ function getEmployee({employeeName, bitcoinPerSecIncrement, description, amount,
     </td>
     <td class="upgrade-stats-cell">
       <p>db: ${amount}</p>
-      <p>ár: ${price}</p>
+      <p>ár: ${formatPrice(price)}</p>
     </td>
     <td>      
       <p><strong>${employeeName} (${bitcoinPerSecIncrement} btc / mp)</strong></p>
@@ -145,13 +167,12 @@ function getEmployee({employeeName, bitcoinPerSecIncrement, description, amount,
   `;
 }
 
-let businessTemplate = getEmployee(employeeList[0]);
-document.querySelector(".js-business-tbody").innerHTML = businessTemplate;
+document.querySelector(".js-business-tbody").innerHTML = employeeList.map(getEmployee).join("");
+// let businessRows = [];
+// for(let employee of employeeList){
+//   businessRows.push(getEmployee(employee));
+// }
 
-/*
- Házi feladat
-  1. Ha ismételni való van JavaScript alapokból akkor a gyorstalpallót átnézni.
-  2. A clickingAreaNode sablont jelenleg a template váltózóval rendereljük. Érjük el, hogy a template változó helyett egy függvényhívás adja meg a sablont.
-  3. A skillName, bitcoinPerIncrement, description, amount, price, link változókat fogd össze egyetlen objektumba és ezt az objektumot add át a getskill függvénynek.
-  4. A getskill példája alapján írd meg a getEmployee függvényt is a példaobjektummal.
- */
+// document.querySelector(".js-business-tbody").innerHTML = businessRows.join("");
+// let businessTemplate = getEmployee(employeeList[0]);
+// document.querySelector(".js-business-tbody").innerHTML = businessTemplate;
