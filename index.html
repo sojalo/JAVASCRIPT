@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles/style.css">
+  <!-- <script src="./js/clicker.js"></script> -->
 </head>
 <body>
   <header>
@@ -16,7 +17,7 @@
   <main class="main-container">
     <section class="inventory-container per-click">
       <table class="skills-table">
-        <tbody>
+        <tbody class="js-skill-tbody">
           <tr>
             <td class="upgrade-text-cell">      
                 <p><strong>BitCoin kutatás (999 999 btc / klikk)</strong></p>
@@ -99,13 +100,7 @@
       </table>
     </section>
 
-    <section class="clicking-area-container">
-      <p><strong>123 456 másodperc</strong></p>
-      <img src="./assets/bitcoin.png" alt="bitcoin clicker">
-      <p><strong>123 456 K bitcoin</strong></p>
-      <p>123 456 K bitcoin / click</p>
-      <p>123 456 K bitcoin / mp</p>
-    </section>
+    <section class="clicking-area-container js-clicking-area-container"></section>
 
     <section class="inventory-container per-sec">
       <table class="business-table">
@@ -192,5 +187,6 @@
       </table>
     </section>
   </main>
+  <script src="./js/clicker.js"></script>
 </body>
 </html>
