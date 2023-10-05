@@ -35,6 +35,15 @@ body {
   text-align: center;
 }
 
+.bit-coin {
+  cursor: pointer;
+  user-select: none;
+}
+
+.bit-coin:hover{
+  transform: scale(1.1);
+}
+
 .upgrade-stats-cell {
   width: 64px;
 }

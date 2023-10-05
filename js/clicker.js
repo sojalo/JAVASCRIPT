@@ -1,21 +1,33 @@
+let clickingAreaNode = document.querySelector(".js-clicking-area-container");
+
 // Állapottér
 let seconds = 0;
 let bitcoin = 0;
 let bitcoinPerClick = 1;
 let bitcoinPerSec = 0;
 
-function getTemplate(){
+function getClickingAreaTemplate(){
   return `
     <p><strong>${seconds} másodperc</strong></p>
-    <img src="./assets/bitcoin.png" alt="bitcoin clicker" />
+    <img 
+      src="./assets/bitcoin.png" 
+      alt="bitcoin clicker" 
+      data-enable_click="true" 
+      class="bit-coin"/>
     <p><strong>${bitcoin} bitcoin</strong></p>
     <p>${bitcoinPerClick} bitcoin / click</p>
     <p>${bitcoinPerSec} bitcoin / mp</p>
   `;
 }
 
-let clickingAreaNode = document.querySelector(".js-clicking-area-container");
-clickingAreaNode.innerHTML = getTemplate();
+function handleBitcoinClicked(event) {
+  if(event.target.dataset.enable_click === "true") {
+    bitcoin += bitcoinPerClick;
+    // clickingAreaNode.innerHTML = getClickingAreaTemplate();
+    render();
+  }
+}
+
 /********************************************************************************************/ 
 /* PRE: 0 <= Price <= 999999*/
 function formatPrice(price) {
@@ -101,10 +113,7 @@ function getSkill({skillName, bitcoinPerIncrement, description, amount, price, l
 // document.querySelector(".js-skills-tbody").innerHTML = skillHtml;
 
 // 3. megoldás Map
-document.querySelector(".js-skills-tbody").innerHTML =
-  skillList
-  .map(getSkill)
-  .join("");
+
 /********************************************************************************************/ 
 let employeeList = [
   {
@@ -167,7 +176,24 @@ function getEmployee({employeeName, bitcoinPerSecIncrement, description, amount,
   `;
 }
 
-document.querySelector(".js-business-tbody").innerHTML = employeeList.map(getEmployee).join("");
+function render() {
+  clickingAreaNode.innerHTML = getClickingAreaTemplate();
+  document.querySelector(".js-skills-tbody").innerHTML = skillList.map(getSkill).join("");
+  document.querySelector(".js-business-tbody").innerHTML = employeeList.map(getEmployee).join("");
+}
+
+function initialize(){
+  bitcoin = 0;
+  seconds = 0;
+  bitcoinPerClick = 1;
+  bitcoinPerSec = 0;
+  
+  clickingAreaNode.addEventListener('click', handleBitcoinClicked);
+  render();
+}
+
+initialize();
+
 // let businessRows = [];
 // for(let employee of employeeList){
 //   businessRows.push(getEmployee(employee));
