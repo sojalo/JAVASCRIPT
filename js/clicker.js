@@ -1,6 +1,6 @@
 let clickingAreaNode = document.querySelector(".js-clicking-area-container");
-// let clickingAreaLeft = document.querySelector(".js-skills-tbody");
 let inventoryContainerNode = document.querySelector(".js-inventory-container");
+let inventoryContainerNode2 = document.querySelector(".js-inventory-container2");
 
 // Állapottér
 let {seconds,  bitcoin,  bitcoinPerClick,  bitcoinPerSec, skillList, employeeList} = getInitialState();
@@ -135,6 +135,21 @@ function handleInventoryClicked(event){
   }
 }
 
+function handleInventoryClicked2(event){
+  let clickIndex2 = event.target.dataset.index2;
+  if (typeof clickIndex2 !== "undefined") {
+    let clickedEmployee = employeeList[clickIndex2];
+      if(bitcoin < clickedEmployee.price){
+        alert("Nem áll rendelkezésedre elég bitcoin!");
+      return;
+    }
+    bitcoin -= clickedEmployee.price;
+    bitcoinPerSec += clickedEmployee.bitcoinPerSecIncrement;
+    clickedEmployee.amount += 1;
+    render();
+  }
+}
+
 /********************************************************************************************/ 
 /* PRE: 0 <= Price <= 999999*/
 function formatPrice(price) {
@@ -158,7 +173,8 @@ function getSkill({skillName, bitcoinPerIncrement, description, amount, price, l
       <td class="upgrade-icon-cell">
         <img 
           class="skill-image" 
-          src="${link}" alt="${skillName}" 
+          src="${link}" 
+          alt="${skillName}" 
           data-index="${index}" />
       </td>
     </tr>
@@ -167,12 +183,15 @@ function getSkill({skillName, bitcoinPerIncrement, description, amount, price, l
 
 /********************************************************************************************/ 
 
-
-function getEmployee({employeeName, bitcoinPerSecIncrement, description, amount, price, link}){
+function getEmployee({employeeName, bitcoinPerSecIncrement, description, amount, price, link}, index2){
   return `
   <tr>
     <td class="upgrade-icon-cell">
-      <img class="skill-image" src="${link}" alt="${employeeName}">
+      <img 
+        class="skill-image" 
+        src="${link}" 
+        alt="${employeeName}"
+        data-index2="${index2}" />
     </td>
     <td class="upgrade-stats-cell">
       <p>db: ${amount}</p>
@@ -200,8 +219,8 @@ function initialize(){
   bitcoinPerSec = data.bitcoinPerSec;
   
   clickingAreaNode.addEventListener('click', handleBitcoinClicked);
-  // clickingAreaLeft.addEventListener('click', handleLeftClicked);
   inventoryContainerNode.addEventListener('click', handleInventoryClicked);
+  inventoryContainerNode2.addEventListener('click', handleInventoryClicked2);
   render();
 }
 
