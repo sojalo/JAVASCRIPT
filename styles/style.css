@@ -17,6 +17,10 @@ body {
   margin: 18px;
 }
 
+p {
+  user-select: none;
+}
+
 .skills-table, .business-table {
   width: 100%;
 }

@@ -15,149 +15,25 @@
     <h1>Bitcoin Tőzsde</h1>
   </header>
   <main class="main-container">
-    <section class="inventory-container per-click js-inventory-container">
+    <section class="inventory-container per-click js-skills-container">
       <table class="skills-table">
-        <tbody class="js-skills-tbody">
-          <!-- <tr>
-            <td class="upgrade-text-cell">      
-                <p><strong>BitCoin kutatás (999 999 btc / klikk)</strong></p>
-                <p>Ahol a bányászatot megváltoztatják, bitcoint találhatunk.</p>
-            </td>
-            <td class="upgrade-stats-cell">
-              <p>db: 999</p>
-              <p>ár: 125k</p>
-            </td>
-            <td class="upgrade-icon-cell">
-              <img class="skill-image" src="./assets/bitcoin_kutatas.png" alt="BitCoin kutatás">
-            </td>
-          </tr>
-          <tr>
-            <td class="upgrade-text-cell">      
-                <p><strong>Bróker képzés (999 999 btc / klikk)</strong></p>
-                <p>Bányászok betanítását készpénzre válthatjuk.</p>
-            </td>
-            <td class="upgrade-stats-cell">
-              <p>db: 999</p>
-              <p>ár: 125k</p>
-            </td>
-            <td class="upgrade-icon-cell">
-              <img class="skill-image" src="./assets/broker_kepzes.png" alt="Bróker képzés">
-            </td>
-          </tr>
-          <tr>
-            <td class="upgrade-text-cell">      
-                <p><strong>Manager képzés (999 999 btc / klikk)</strong></p>
-                <p>Minél jobban kitanuljuk a managerek képzésének tudományát, annál több managert tudunk értékesíteni bitcoinért cserébe.</p>
-            </td>
-            <td class="upgrade-stats-cell">
-              <p>db: 999</p>
-              <p>ár: 125k</p>
-            </td>
-            <td class="upgrade-icon-cell">
-              <img class="skill-image" src="./assets/manager_kepzes.png" alt="Manager képzés">
-            </td>
-          </tr>
-          <tr>
-            <td class="upgrade-text-cell">      
-                <p><strong>Kereskedelem (999 999 btc / klikk)</strong></p>
-                <p>BitCoinok értékesítésével profitot termelhetünk.</p>
-            </td>
-            <td class="upgrade-stats-cell">
-              <p>db: 999</p>
-              <p>ár: 125k</p>
-            </td>
-            <td class="upgrade-icon-cell">
-              <img class="skill-image" src="./assets/kereskedelem.png" alt="Kereskedelem">
-            </td>
-          </tr>
-          <tr>
-            <td class="upgrade-text-cell">      
-                <p><strong>Tőzsde (999 999 btc / klikk)</strong></p>
-                <p>A bányászat hatását tovább erősíti és magasabb kereskedelmi tevékenységet is végezhetünk.</p>
-            </td>
-            <td class="upgrade-stats-cell">
-              <p>db: 999</p>
-              <p>ár: 125k</p>
-            </td>
-            <td class="upgrade-icon-cell">
-              <img class="skill-image" src="./assets/tozsde.png" alt="Tőzsde">
-            </td>
-          </tr> -->
-        </tbody>
+        <tbody class="js-skills-tbody"></tbody>
       </table>
     </section>
 
-    <section class="clicking-area-container js-clicking-area-container"></section>
+    <section class="clicking-area-container">
+      <div class="js-timer-area"></div>
+      <img 
+        src="./assets/bitcoin.png" 
+        alt="bitcoin clicker" 
+        data-enable_click="true" 
+        class="bit-coin js-clicking-area-container"/>
+      <div class="js-gold-area"></div>
+    </section>
 
-    <section class="inventory-container per-sec js-inventory-container2">
+    <section class="inventory-container per-sec js-employee-container">
       <table class="business-table">
-        <tbody class="js-business-tbody">
-          <tr>
-            <td class="upgrade-icon-cell">
-              <img class="skill-image" src="./assets/bitcoin_kutato.png" alt="BitCoin kutató">
-            </td>
-            <td class="upgrade-stats-cell">
-              <p>db: 999</p>
-              <p>ár: 125k</p>
-            </td>
-            <td>      
-              <p><strong>BitCoin kutató (999 999 btc / mp)</strong></p>
-              <p>Erőforrás leírása</p>
-            </td>
-          </tr>
-          <tr>
-            <td class="upgrade-icon-cell">
-              <img class="skill-image" src="./assets/broker_kepzo.png" alt="Bróker képző">
-            </td>
-            <td class="upgrade-stats-cell">
-              <p>db: 999</p>
-              <p>ár: 125k</p>
-            </td>
-            <td>      
-              <p><strong>Bróker képző (999 999 btc / mp)</strong></p>
-              <p>Szerződéses munkatársként bányászokat tanít.</p>
-            </td>
-          </tr>
-          <tr>
-            <td class="upgrade-icon-cell">
-              <img class="skill-image" src="./assets/manager_kepzo.png" alt="Manager képző">
-            </td>
-            <td class="upgrade-stats-cell">
-              <p>db: 999</p>
-              <p>ár: 125k</p>
-            </td>
-            <td>      
-              <p><strong>Manager képző (999 999 btc / mp)</strong></p>
-              <p>Managereket képez ki és értékesít a piacon.</p>
-            </td>
-          </tr>
-          <tr>
-            <td class="upgrade-icon-cell">
-              <img class="skill-image" src="./assets/kereskedo.png" alt="Kereskedő">
-            </td>
-            <td class="upgrade-stats-cell">
-              <p>db: 999</p>
-              <p>ár: 125k</p>
-            </td>
-            <td>      
-              <p><strong>Kereskedő (999 999 btc / mp)</strong></p>
-              <p>Blokkláncokat készít és értékesít.</p>
-            </td>
-          </tr>
-          <tr>
-            <td class="upgrade-icon-cell">
-              <img class="skill-image" src="./assets/befekteto.png" alt="Befektető Warren Buffett">
-            </td>
-            <td class="upgrade-stats-cell">
-              <p>db: 999</p>
-              <p>ár: 125k</p>
-            </td>
-            <td>      
-              <p><strong>Befektető Warren Buffett (999 999 btc / mp)</strong></p>
-              <p>Kezeli és fialtatja a vagyonodat.</p>
-            </td>
-          </tr>
-        </tbody>
+        <tbody class="js-business-tbody"></tbody>
       </table>
     </section>
   </main>

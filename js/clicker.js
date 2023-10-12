@@ -1,12 +1,34 @@
 let clickingAreaNode = document.querySelector(".js-clicking-area-container");
-let inventoryContainerNode = document.querySelector(".js-inventory-container");
-let inventoryContainerNode2 = document.querySelector(".js-inventory-container2");
+let skillsContainerNode = document.querySelector(".js-skills-container");
+let employeeContainerNode = document.querySelector(".js-employee-container");
+let timerAreaNode = document.querySelector(".js-timer-area");
+let goldAreaNode = document.querySelector(".js-gold-area");
+
+const  CHANGE_TYPE = {
+  SKILL: 'SKILL',
+  EMPLOYEE: 'EMPLOYEE',
+  TIME: 'TIME',
+  GOLD: 'GOLD',
+  ALL: 'ALL',
+}
 
 // Állapottér
-let {seconds,  bitcoin,  bitcoinPerClick,  bitcoinPerSec, skillList, employeeList} = getInitialState();
+let {
+    seconds,  
+    bitcoin,  
+    bitcoinPerClick,  
+    bitcoinPerSec, 
+    skillList, 
+    employeeList, 
+    startTimestamp,
+    skillsChanged,
+    employeeChanged,
+  } = getInitialState();
 
-function getInitialState(){  
+function getInitialState(){ 
   return {
+    intervalid: setInterval(administrateTime, 200),
+    startTimestamp: new Date().getTime(),
     seconds: 0,
     bitcoin: 0,
     bitcoinPerClick: 1,
@@ -98,29 +120,26 @@ function getInitialState(){
   };
 }
 
-function getClickingAreaTemplate(){
-  return `
-    <p><strong>${seconds} másodperc</strong></p>
-    <img 
-      src="./assets/bitcoin.png" 
-      alt="bitcoin clicker" 
-      data-enable_click="true" 
-      class="bit-coin"/>
-    <p><strong>${bitcoin} bitcoin</strong></p>
-    <p>${bitcoinPerClick} bitcoin / click</p>
-    <p>${bitcoinPerSec} bitcoin / mp</p>
-  `;
+function administrateTime(){
+  let currentTimeStamp = new Date().getTime();
+  let elapsedTime = Math.floor((currentTimeStamp - startTimestamp) / 1000);
+  let rewardSeconds = elapsedTime - seconds;
+  if(rewardSeconds > 0){
+    bitcoin += bitcoinPerSec * rewardSeconds;
+    seconds = elapsedTime;
+    render(CHANGE_TYPE.TIME);
+  }
 }
 
 /************** click event listener **********************************************************/
 function handleBitcoinClicked(event) {
   if(event.target.dataset.enable_click === "true") {
     bitcoin += bitcoinPerClick;
-    render();
+    render(CHANGE_TYPE.GOLD);
   }
 }
 
-function handleInventoryClicked(event){
+function handleSkillsClicked(event){
   let clickIndex = event.target.dataset.index;
   if (typeof clickIndex !== "undefined") {
     let clickedSkill = skillList[clickIndex];
@@ -131,14 +150,14 @@ function handleInventoryClicked(event){
     bitcoin -= clickedSkill.price;
     bitcoinPerClick += clickedSkill.bitcoinPerIncrement;
     clickedSkill.amount += 1;
-    render();
+    render(CHANGE_TYPE.SKILL);
   }
 }
 
-function handleInventoryClicked2(event){
-  let clickIndex2 = event.target.dataset.index2;
-  if (typeof clickIndex2 !== "undefined") {
-    let clickedEmployee = employeeList[clickIndex2];
+function handleEmployeeClicked(event){
+  let clickIndex = event.target.dataset.index;
+  if (typeof clickIndex !== "undefined") {
+    let clickedEmployee = employeeList[clickIndex];
       if(bitcoin < clickedEmployee.price){
         alert("Nem áll rendelkezésedre elég bitcoin!");
       return;
@@ -146,11 +165,11 @@ function handleInventoryClicked2(event){
     bitcoin -= clickedEmployee.price;
     bitcoinPerSec += clickedEmployee.bitcoinPerSecIncrement;
     clickedEmployee.amount += 1;
-    render();
+    render(CHANGE_TYPE.EMPLOYEE);
   }
 }
 
-/********************************************************************************************/ 
+/***************** Templates *******************************************************************/ 
 /* PRE: 0 <= Price <= 999999*/
 function formatPrice(price) {
   if(price < 1000) return price;
@@ -158,6 +177,19 @@ function formatPrice(price) {
   return `${kValue}K`;
 }
 
+function getTimerAreaTemplate(){
+  return `
+    <p><strong>${seconds} másodperc</strong></p>
+  `;
+}
+
+function getGoldAreaTemplate(){
+  return `
+    <p><strong>${bitcoin} bitcoin</strong></p>
+    <p>${bitcoinPerClick} bitcoin / click</p>
+    <p>${bitcoinPerSec} bitcoin / mp</p>
+  `;
+}
 /********************************************************************************************/ 
 function getSkill({skillName, bitcoinPerIncrement, description, amount, price, link}, index){
   return `
@@ -183,7 +215,7 @@ function getSkill({skillName, bitcoinPerIncrement, description, amount, price, l
 
 /********************************************************************************************/ 
 
-function getEmployee({employeeName, bitcoinPerSecIncrement, description, amount, price, link}, index2){
+function getEmployee({employeeName, bitcoinPerSecIncrement, description, amount, price, link}, index){
   return `
   <tr>
     <td class="upgrade-icon-cell">
@@ -191,7 +223,7 @@ function getEmployee({employeeName, bitcoinPerSecIncrement, description, amount,
         class="skill-image" 
         src="${link}" 
         alt="${employeeName}"
-        data-index2="${index2}" />
+        data-index="${index}" />
     </td>
     <td class="upgrade-stats-cell">
       <p>db: ${amount}</p>
@@ -205,10 +237,28 @@ function getEmployee({employeeName, bitcoinPerSecIncrement, description, amount,
   `;
 }
 
-function render() {
-  clickingAreaNode.innerHTML = getClickingAreaTemplate();
-  document.querySelector(".js-skills-tbody").innerHTML = skillList.map(getSkill).join("");
-  document.querySelector(".js-business-tbody").innerHTML = employeeList.map(getEmployee).join("");
+function render(changeType = CHANGE_TYPE.ALL) {
+  if(changeType === CHANGE_TYPE.ALL || changeType === CHANGE_TYPE.TIME){
+      timerAreaNode.innerHTML = getTimerAreaTemplate();
+  }
+
+  if(changeType === CHANGE_TYPE.ALL || changeType === CHANGE_TYPE.SKILL){
+    document.querySelector(".js-skills-tbody").innerHTML = skillList.map(getSkill).join("");
+  }
+
+  if(changeType === CHANGE_TYPE.ALL || changeType === CHANGE_TYPE.EMPLOYEE){
+    document.querySelector(".js-business-tbody").innerHTML = employeeList.map(getEmployee).join("");
+  }
+  goldAreaNode.innerHTML = getGoldAreaTemplate();
+  disableImageDragDrop();
+}
+
+function disableImageDragDrop() {
+  const imgList = document.querySelectorAll('img');
+
+  for (let img of imgList) {
+    img.ondragstart = () => false;
+  }
 }
 
 function initialize(){
@@ -219,8 +269,8 @@ function initialize(){
   bitcoinPerSec = data.bitcoinPerSec;
   
   clickingAreaNode.addEventListener('click', handleBitcoinClicked);
-  inventoryContainerNode.addEventListener('click', handleInventoryClicked);
-  inventoryContainerNode2.addEventListener('click', handleInventoryClicked2);
+  skillsContainerNode.addEventListener('click', handleSkillsClicked);
+  employeeContainerNode.addEventListener('click', handleEmployeeClicked);
   render();
 }
 
