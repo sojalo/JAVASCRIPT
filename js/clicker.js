@@ -131,7 +131,7 @@ function administrateTime(){
   }
 }
 
-/************** click event listener **********************************************************/
+/************** Click Event Listener **********************************************************/
 function handleBitcoinClicked(event) {
   if(event.target.dataset.enable_click === "true") {
     bitcoin += bitcoinPerClick;
@@ -190,7 +190,7 @@ function getGoldAreaTemplate(){
     <p>${bitcoinPerSec} bitcoin / mp</p>
   `;
 }
-/********************************************************************************************/ 
+
 function getSkill({skillName, bitcoinPerIncrement, description, amount, price, link}, index){
   return `
     <tr>
@@ -212,8 +212,6 @@ function getSkill({skillName, bitcoinPerIncrement, description, amount, price, l
     </tr>
   `;
 }
-
-/********************************************************************************************/ 
 
 function getEmployee({employeeName, bitcoinPerSecIncrement, description, amount, price, link}, index){
   return `
@@ -237,13 +235,30 @@ function getEmployee({employeeName, bitcoinPerSecIncrement, description, amount,
   `;
 }
 
+function getSkillsTemplate(){
+  let html = '';
+  
+  let i = 0;
+  let hideRemainingSkills = false;
+  do {
+    let skill = skillList[i];
+    html += getSkill(skill, i);
+    if(skill.amount === 0){
+      hideRemainingSkills = true;
+    }
+    i += 1;
+  } while(i < skillList.length && !hideRemainingSkills)
+
+  return html;
+}
+
 function render(changeType = CHANGE_TYPE.ALL) {
   if(changeType === CHANGE_TYPE.ALL || changeType === CHANGE_TYPE.TIME){
       timerAreaNode.innerHTML = getTimerAreaTemplate();
   }
 
   if(changeType === CHANGE_TYPE.ALL || changeType === CHANGE_TYPE.SKILL){
-    document.querySelector(".js-skills-tbody").innerHTML = skillList.map(getSkill).join("");
+    document.querySelector(".js-skills-tbody").innerHTML = getSkillsTemplate();
   }
 
   if(changeType === CHANGE_TYPE.ALL || changeType === CHANGE_TYPE.EMPLOYEE){
