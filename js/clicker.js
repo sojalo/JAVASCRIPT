@@ -4,28 +4,28 @@ let employeeContainerNode = document.querySelector(".js-employee-container");
 let timerAreaNode = document.querySelector(".js-timer-area");
 let goldAreaNode = document.querySelector(".js-gold-area");
 
-const  CHANGE_TYPE = {
-  SKILL: 'SKILL',
-  EMPLOYEE: 'EMPLOYEE',
-  TIME: 'TIME',
-  GOLD: 'GOLD',
-  ALL: 'ALL',
-}
+const CHANGE_TYPE = {
+  SKILL: "SKILL",
+  EMPLOYEE: "EMPLOYEE",
+  TIME: "TIME",
+  GOLD: "GOLD",
+  ALL: "ALL",
+};
 
 // Állapottér
 let {
-    seconds,  
-    bitcoin,  
-    bitcoinPerClick,  
-    bitcoinPerSec, 
-    skillList, 
-    employeeList, 
-    startTimestamp,
-    skillsChanged,
-    employeeChanged,
-  } = getInitialState();
+  seconds,
+  bitcoin,
+  bitcoinPerClick,
+  bitcoinPerSec,
+  skillList,
+  employeeList,
+  startTimestamp,
+  skillsChanged,
+  employeeChanged,
+} = getInitialState();
 
-function getInitialState(){ 
+function getInitialState() {
   return {
     intervalid: setInterval(administrateTime, 200),
     startTimestamp: new Date().getTime(),
@@ -33,85 +33,88 @@ function getInitialState(){
     bitcoin: 0,
     bitcoinPerClick: 1,
     bitcoinPerSec: 0,
-    skillList : [
+    skillList: [
       {
-        skillName: 'Bitcoin kutatás',
+        skillName: "Bitcoin kutatás",
         bitcoinPerIncrement: 1,
-        description: 'Ahol a bányászatot megváltoztatják, bitcoint találhatunk.',
+        description:
+          "Ahol a bányászatot megváltoztatják, bitcoint találhatunk.",
         amount: 0,
         price: 10,
         link: "./assets/bitcoin_kutatas.png",
       },
       {
-        skillName: 'Bróker képzés',
+        skillName: "Bróker képzés",
         bitcoinPerIncrement: 10,
-        description: 'Bányászok betanítását készpénzre válthatjuk.',
+        description: "Brókerek betanítását készpénzre válthatjuk.",
         amount: 0,
         price: 200,
         link: "./assets/broker_kepzes.png",
       },
       {
-        skillName: 'Manager képzés',
+        skillName: "Manager képzés",
         bitcoinPerIncrement: 25,
-        description: 'Minél jobban kitanuljuk a managerek képzésének tudományát, annál több managert tudunk értékesíteni bitcoinért cserébe.',
+        description:
+          "Minél jobban kitanuljuk a managerek képzésének tudományát, annál több managert tudunk értékesíteni bitcoinért cserébe.",
         amount: 0,
         price: 750,
         link: "./assets/manager_kepzes.png",
       },
       {
-        skillName: 'Kereskedelem',
+        skillName: "Kereskedelem",
         bitcoinPerIncrement: 100,
-        description: 'BitCoinok értékesítésével profitot termelhetünk.',
+        description: "Bitcoinok értékesítésével profitot termelhetünk.",
         amount: 0,
         price: 4000,
         link: "./assets/kereskedelem.png",
       },
       {
-        skillName: 'Tőzsde',
+        skillName: "Tőzsde",
         bitcoinPerIncrement: 300,
-        description: 'A bányászat hatását tovább erősíti és magasabb kereskedelmi tevékenységet is végezhetünk.',
+        description:
+          "A bitcoin bányászat hatását tovább erősíti és magasabb kereskedelmi tevékenységet is végezhetünk.",
         amount: 0,
         price: 15000,
         link: "./assets/tozsde.png",
       },
     ],
-    employeeList : [
+    employeeList: [
       {
-        employeeName: 'BitCoin kutató',
+        employeeName: "Bitcoin kutató",
         bitcoinPerSecIncrement: 1,
-        description: 'Bitcoint keres és talál.',
+        description: "Bitcoint keres és talál.",
         amount: 0,
         price: 100,
         link: "./assets/bitcoin_kutato.png",
       },
       {
-        employeeName: 'Bróker képző',
+        employeeName: "Bróker képző",
         bitcoinPerSecIncrement: 5,
-        description: 'Szerződéses munkatársként bányászokat tanít.',
+        description: "Szerződéses munkatársként brókereket tanít.",
         amount: 0,
         price: 1000,
         link: "./assets/broker_kepzo.png",
       },
       {
-        employeeName: 'Manager képző',
+        employeeName: "Manager képző",
         bitcoinPerSecIncrement: 10,
-        description: 'Managereket képez ki és értékesít a piacon.',
+        description: "Managereket képez ki és értékesít a piacon.",
         amount: 0,
         price: 3000,
         link: "./assets/manager_kepzo.png",
       },
       {
-        employeeName: 'Kereskedő',
+        employeeName: "Kereskedő",
         bitcoinPerSecIncrement: 25,
-        description: 'Blokkláncokat készít és értékesít.',
+        description: "Blokkláncokat készít és értékesít.",
         amount: 0,
         price: 10000,
         link: "./assets/kereskedo.png",
       },
       {
-        employeeName: 'Befektető Warren Buffett',
+        employeeName: "Befektető Warren Buffett",
         bitcoinPerSecIncrement: 100,
-        description: 'Kezeli és fialtatja a vagyonodat.',
+        description: "Kezeli és fialtatja a vagyonodat.",
         amount: 0,
         price: 50000,
         link: "./assets/befekteto.png",
@@ -120,11 +123,11 @@ function getInitialState(){
   };
 }
 
-function administrateTime(){
+function administrateTime() {
   let currentTimeStamp = new Date().getTime();
   let elapsedTime = Math.floor((currentTimeStamp - startTimestamp) / 1000);
   let rewardSeconds = elapsedTime - seconds;
-  if(rewardSeconds > 0){
+  if (rewardSeconds > 0) {
     bitcoin += bitcoinPerSec * rewardSeconds;
     seconds = elapsedTime;
     render(CHANGE_TYPE.TIME);
@@ -133,17 +136,17 @@ function administrateTime(){
 
 /************** Click Event Listener **********************************************************/
 function handleBitcoinClicked(event) {
-  if(event.target.dataset.enable_click === "true") {
+  if (event.target.dataset.enable_click === "true") {
     bitcoin += bitcoinPerClick;
     render(CHANGE_TYPE.GOLD);
   }
 }
 
-function handleSkillsClicked(event){
+function handleSkillsClicked(event) {
   let clickIndex = event.target.dataset.index;
   if (typeof clickIndex !== "undefined") {
     let clickedSkill = skillList[clickIndex];
-    if(bitcoin < clickedSkill.price){
+    if (bitcoin < clickedSkill.price) {
       alert("Nem áll rendelkezésedre elég bitcoin!");
       return;
     }
@@ -154,12 +157,12 @@ function handleSkillsClicked(event){
   }
 }
 
-function handleEmployeeClicked(event){
+function handleEmployeeClicked(event) {
   let clickIndex = event.target.dataset.index;
   if (typeof clickIndex !== "undefined") {
     let clickedEmployee = employeeList[clickIndex];
-      if(bitcoin < clickedEmployee.price){
-        alert("Nem áll rendelkezésedre elég bitcoin!");
+    if (bitcoin < clickedEmployee.price) {
+      alert("Nem áll rendelkezésedre elég bitcoin!");
       return;
     }
     bitcoin -= clickedEmployee.price;
@@ -169,29 +172,29 @@ function handleEmployeeClicked(event){
   }
 }
 
-/***************** Templates *******************************************************************/ 
+/***************** Templates *******************************************************************/
 /* PRE: 0 <= Price <= 999999*/
 function formatPrice(price) {
-  if(price < 1000) return price;
+  if (price < 1000) return price;
   let kValue = price / 1000;
   return `${kValue}K`;
 }
 
-function getTimerAreaTemplate(){
+function getTimerAreaTemplate() {
   return `
     <p><strong>${seconds} másodperc</strong></p>
   `;
 }
 
-function getGoldAreaTemplate(){
+function getGoldAreaTemplate() {
   return `
     <p><strong>${bitcoin} bitcoin</strong></p>
-    <p>${bitcoinPerClick} bitcoin / click</p>
+    <p>${bitcoinPerClick} bitcoin / klikk</p>
     <p>${bitcoinPerSec} bitcoin / mp</p>
   `;
 }
 
-function getSkill({skillName, bitcoinPerIncrement, description, amount, price, link}, index){
+function getSkill({ skillName, bitcoinPerIncrement, description, amount, price, link }, index ) {
   return `
     <tr>
       <td class="upgrade-text-cell">      
@@ -213,7 +216,7 @@ function getSkill({skillName, bitcoinPerIncrement, description, amount, price, l
   `;
 }
 
-function getEmployee({employeeName, bitcoinPerSecIncrement, description, amount, price, link}, index){
+function getEmployee({ employeeName, bitcoinPerSecIncrement, description, amount, price, link }, index) {
   return `
   <tr>
     <td class="upgrade-icon-cell">
@@ -235,57 +238,75 @@ function getEmployee({employeeName, bitcoinPerSecIncrement, description, amount,
   `;
 }
 
-function getSkillsTemplate(){
-  let html = '';
-  
+function getSkillsTemplate() {
+  let html = "";
+
   let i = 0;
   let hideRemainingSkills = false;
   do {
     let skill = skillList[i];
     html += getSkill(skill, i);
-    if(skill.amount === 0){
+    if (skill.amount === 0) {
       hideRemainingSkills = true;
     }
     i += 1;
-  } while(i < skillList.length && !hideRemainingSkills)
+  } while (i < skillList.length && !hideRemainingSkills);
+
+  return html;
+}
+
+function getEmployeeTemplate() {
+  let html = "";
+
+  let i = 0;
+  let hideRemainingEmployees = false;
+  do {
+    let employee = employeeList[i];
+    html += getEmployee(employee, i);
+    if (employee.amount === 0) {
+      hideRemainingEmployees = true;
+    }
+    i += 1;
+  } while (i < employeeList.length && !hideRemainingEmployees);
 
   return html;
 }
 
 function render(changeType = CHANGE_TYPE.ALL) {
-  if(changeType === CHANGE_TYPE.ALL || changeType === CHANGE_TYPE.TIME){
-      timerAreaNode.innerHTML = getTimerAreaTemplate();
+  if (changeType === CHANGE_TYPE.ALL || changeType === CHANGE_TYPE.TIME) {
+    timerAreaNode.innerHTML = getTimerAreaTemplate();
   }
 
-  if(changeType === CHANGE_TYPE.ALL || changeType === CHANGE_TYPE.SKILL){
+  if (changeType === CHANGE_TYPE.ALL || changeType === CHANGE_TYPE.SKILL) {
     document.querySelector(".js-skills-tbody").innerHTML = getSkillsTemplate();
   }
 
-  if(changeType === CHANGE_TYPE.ALL || changeType === CHANGE_TYPE.EMPLOYEE){
-    document.querySelector(".js-business-tbody").innerHTML = employeeList.map(getEmployee).join("");
+  if (changeType === CHANGE_TYPE.ALL || changeType === CHANGE_TYPE.EMPLOYEE) {
+    document.querySelector(".js-business-tbody").innerHTML =
+      getEmployeeTemplate();
   }
   goldAreaNode.innerHTML = getGoldAreaTemplate();
   disableImageDragDrop();
 }
 
 function disableImageDragDrop() {
-  const imgList = document.querySelectorAll('img');
+  const imgList = document.querySelectorAll("img");
 
   for (let img of imgList) {
     img.ondragstart = () => false;
   }
 }
 
-function initialize(){
+function initialize() {
   let data = getInitialState();
   seconds = data.seconds;
   bitcoin = data.bitcoin;
   bitcoinPerClick = data.bitcoinPerClick;
   bitcoinPerSec = data.bitcoinPerSec;
-  
-  clickingAreaNode.addEventListener('click', handleBitcoinClicked);
-  skillsContainerNode.addEventListener('click', handleSkillsClicked);
-  employeeContainerNode.addEventListener('click', handleEmployeeClicked);
+
+  clickingAreaNode.addEventListener("click", handleBitcoinClicked);
+  skillsContainerNode.addEventListener("click", handleSkillsClicked);
+  employeeContainerNode.addEventListener("click", handleEmployeeClicked);
   render();
 }
 
