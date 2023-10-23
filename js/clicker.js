@@ -238,36 +238,19 @@ function getEmployee({ employeeName, bitcoinPerSecIncrement, description, amount
   `;
 }
 
-function getSkillsTemplate() {
+function getListTemplate(list, getItemTemplate) {
   let html = "";
 
   let i = 0;
-  let hideRemainingSkills = false;
+  let hideRemainingItems = false;
   do {
-    let skill = skillList[i];
-    html += getSkill(skill, i);
-    if (skill.amount === 0) {
-      hideRemainingSkills = true;
+    let item = list[i];
+    html += getItemTemplate(item, i);
+    if (item.amount === 0) {
+      hideRemainingItems = true;
     }
     i += 1;
-  } while (i < skillList.length && !hideRemainingSkills);
-
-  return html;
-}
-
-function getEmployeeTemplate() {
-  let html = "";
-
-  let i = 0;
-  let hideRemainingEmployees = false;
-  do {
-    let employee = employeeList[i];
-    html += getEmployee(employee, i);
-    if (employee.amount === 0) {
-      hideRemainingEmployees = true;
-    }
-    i += 1;
-  } while (i < employeeList.length && !hideRemainingEmployees);
+  } while (i < list.length && !hideRemainingItems);
 
   return html;
 }
@@ -278,12 +261,11 @@ function render(changeType = CHANGE_TYPE.ALL) {
   }
 
   if (changeType === CHANGE_TYPE.ALL || changeType === CHANGE_TYPE.SKILL) {
-    document.querySelector(".js-skills-tbody").innerHTML = getSkillsTemplate();
+    document.querySelector(".js-skills-tbody").innerHTML = getListTemplate(skillList, getSkill);
   }
 
   if (changeType === CHANGE_TYPE.ALL || changeType === CHANGE_TYPE.EMPLOYEE) {
-    document.querySelector(".js-business-tbody").innerHTML =
-      getEmployeeTemplate();
+    document.querySelector(".js-employees-tbody").innerHTML = getListTemplate(employeeList, getEmployee);
   }
   goldAreaNode.innerHTML = getGoldAreaTemplate();
   disableImageDragDrop();
